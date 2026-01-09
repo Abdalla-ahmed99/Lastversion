@@ -427,7 +427,7 @@ app.get('/', (req, res) => {
 //   .catch((err) => {
 //     console.warn('DB connection failed — check .env credentials');
 //   });
-sequelize.sync({ alter: true })
+sequelize.sync()
   .then(() => {
     console.log('Database synced');
   })
