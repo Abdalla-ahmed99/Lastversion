@@ -181,9 +181,9 @@
 // });
 // app.listen(3000, () => console.log("Server running on port 3000"));
 
-const https = require('https');
-const http = require('http');
-const selfsigned = require('selfsigned');
+// const https = require('https');
+// const http = require('http');
+// const selfsigned = require('selfsigned');
 const express = require('express');
 const { sequelize, testConnection } = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
@@ -212,14 +212,14 @@ const app = express();
 
 
 
-// app.use('/frontend', express.static('frontend'));
-const attrs = [{ name: 'commonName', value: 'localhost' }];
-const pems = selfsigned.generate(attrs, { days: 365 });
+// // app.use('/frontend', express.static('frontend'));
+// const attrs = [{ name: 'commonName', value: 'localhost' }];
+// const pems = selfsigned.generate(attrs, { days: 365 });
 
-const options = {
-  key: pems.private,
-  cert: pems.cert,
-};
+// const options = {
+//   key: pems.private,
+//   cert: pems.cert,
+// };
 
 // =============================
 // Middleware
@@ -434,24 +434,31 @@ sequelize.sync()
   .catch(err => {
     console.error('Sync error:', err);
   });
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
 // =============================
 // Start HTTP and HTTPS servers
 // =============================
-const HTTP_PORT = 3000;  // HTTP for local development (React Native, etc.)
-const HTTPS_PORT = 3001; // HTTPS for secure connections
+// const HTTP_PORT = 3000;  // HTTP for local development (React Native, etc.)
+// const HTTPS_PORT = 3001; // HTTPS for secure connections
 
 // Start HTTP server (for local development, especially React Native)
 // This makes it easier to connect from mobile emulators/simulators
-http.createServer(app).listen(HTTP_PORT, () => {
-  console.log(`🚀 HTTP Server running on http://localhost:${HTTP_PORT}`);
-  console.log(`   Use this for React Native development`);
-  console.log(`   Android Emulator: http://10.0.2.2:${HTTP_PORT}`);
-  console.log(`   iOS Simulator: http://localhost:${HTTP_PORT}`);
-  console.log(`   Physical Device: http://YOUR_IP:${HTTP_PORT}`);
-});
+// http.createServer(app).listen(HTTP_PORT, () => {
+//   console.log(`🚀 HTTP Server running on http://localhost:${HTTP_PORT}`);
+//   console.log(`   Use this for React Native development`);
+//   console.log(`   Android Emulator: http://10.0.2.2:${HTTP_PORT}`);
+//   console.log(`   iOS Simulator: http://localhost:${HTTP_PORT}`);
+//   console.log(`   Physical Device: http://YOUR_IP:${HTTP_PORT}`);
+// });
 
-// Start HTTPS server (for production/secure connections)
-https.createServer(options, app).listen(HTTPS_PORT, () => {
-  console.log(`🚀 HTTPS Server running on https://localhost:${HTTPS_PORT}`);
-});
+// // Start HTTPS server (for production/secure connections)
+// https.createServer(options, app).listen(HTTPS_PORT, () => {
+//   console.log(`🚀 HTTPS Server running on https://localhost:${HTTPS_PORT}`);
+// });
 // # STRIPE_SECRET_KEY=sk_test_51Pq7yPGQiFmzJ0mzDU9xRfRyqy2IHlXX1Kkk1KCe8OAYmRRufJxxFfRPxvMpjc1pDo20lLe5C5m28aZbPCqVeLrC00VnKq0NdG
